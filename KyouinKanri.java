@@ -80,6 +80,7 @@ public class KyouinKanri extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
 
 		//フォワード先
 		String forwardPath = null;
@@ -88,34 +89,67 @@ public class KyouinKanri extends HttpServlet {
 		String action = request.getParameter("action");
 
 		if(action.equals("touroku")) {
-			int kyouinId = Integer.parseInt("kyouin_ID");
+			String kyouinIdS = request.getParameter("kyouin_ID");
 			String password = request.getParameter("password");
-			String kan_sei = request.getParameter("kan_sei");
-			String kan_mei = request.getParameter("kan_mei");
-			String huri_sei = request.getParameter("huri_sei");
-			String huri_mei = request.getParameter("huri_mei");
-			int gender = Integer.parseInt("gender");
-			String gakkaName = request.getParameter("gakkaName");
-			Kyouin kyouin = new Kyouin(kyouinId,password,kan_sei,kan_mei,huri_sei,huri_mei,gender,gakkaName);
+			String kan_sei = request.getParameter("kanSei");
+			String kan_mei = request.getParameter("kanMei");
+			String huri_sei = request.getParameter("huriSei");
+			String huri_mei = request.getParameter("huriMei");
+			int gender = Integer.parseInt(request.getParameter("gender"));
+			if(kyouinIdS == "") {
+				request.setAttribute("errorMsg", "教員IDが未入力です");
+			}
+			else if(password == ""){
+				request.setAttribute("errorMsg2", "パスワードが未入力です");
+			}
+			else if(kan_sei == "" || kan_mei == "" || huri_sei == "" || huri_mei == "") {
+				request.setAttribute("errorMsg3", "名前が未入力または名前の入力が不完全です");
+			}
+			else if(gender != 1 && gender != 2) {
+				request.setAttribute("errorMsg4", "性別が未選択です");
+			}
+
+			int kyouinId = Integer.parseInt(kyouinIdS);
+			int gakkaId = Integer.parseInt(request.getParameter("gakkaSelect"));
+			Kyouin kyouin = new Kyouin(kyouinId,password,kan_sei,kan_mei,huri_sei,huri_mei,gender,gakkaId);
 			KyouinDAO kyouinDAO = new KyouinDAO();
 			kyouinDAO.create(kyouin);
 
 			//フォワード先をシス管登録完了画面に設定
 			forwardPath = "/WEB-INF/jsp/shisukantourokukanryou.jsp";
+
 		}else if(action.equals("hensaku")) {
 			int gakkaId = Integer.parseInt(request.getParameter("gakkaSelect"));
-			List<Kyouin> kyouinList = new ArrayList<Kyouin>();
-			KyouinDAO kyouinDAO = new KyouinDAO();
-			kyouinList = kyouinDAO.kyouinListOut(gakkaId);
+			if(gakkaId == 999 ) {
+				int check = 0;
+				request.setAttribute("check", check);
+				request.setAttribute("errorMsg", "学科が選択されていません");
+			}else {
+				List<Kyouin> kyouinList = new ArrayList<Kyouin>();
+				KyouinDAO kyouinDAO = new KyouinDAO();
+				kyouinList = kyouinDAO.kyouinListOut(gakkaId);
+				int check = 1;
+				request.setAttribute("check", check);
+				request.setAttribute("kyouinList", kyouinList);
+			}
 			List<Gakka> gakkaList = new ArrayList<Gakka>();
 			gakkaDAO gakkaDAO = new gakkaDAO();
 			gakkaList = gakkaDAO.gakkaselect();
-			int check = 1;
-			request.setAttribute("check", check);
-			request.setAttribute("kyouinList", kyouinList);
 			request.setAttribute("gakkaId", gakkaId);
 			request.setAttribute("gakkaList",gakkaList);
 			forwardPath = "/WEB-INF/jsp/kyouinhensaku.jsp";
+
+		}else {
+			String kan_sei = request.getParameter("kanSei");
+			String kan_mei = request.getParameter("kanMei");
+			String huri_sei = request.getParameter("huriSei");
+			String huri_mei = request.getParameter("huriMei");
+			int kyouinId = Integer.parseInt(action);
+			int gakkaId = Integer.parseInt(request.getParameter("gakkaSelect"));
+			Kyouin kyouin = new Kyouin(kyouinId,kan_sei,kan_mei,huri_sei,huri_mei,gakkaId);
+			KyouinDAO kyouinDAO = new KyouinDAO();
+			kyouinDAO.update(kyouin);
+			forwardPath = "/WEB-INF/jsp/sisukanhenkoukanryou.jsp";
 		}
 
 		//フォワード文の記述

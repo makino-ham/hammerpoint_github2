@@ -15,15 +15,12 @@
 <th>教員ID</th><td><c:out value="${kyouin.kyouinId}" /></td>
 </tr>
 <tr>
-<th>パスワード</th><td><input type="password" name="pass" value="${kyouin.password }"></td>
+<th>教員名</th><td>姓:<input type="text" name="kanSei" value="${kyouin.kanSei }"></td>
+			   <td>名:<input type="text" name="kanMei" value="${kyouin.kanMei }"></td>
 </tr>
 <tr>
-<th>教員名</th><td>姓:<input type="text" name="kan_sei" value="${kyouin.kanSei }"></td>
-			   <td>名:<input type="text" name="kan_mei" value="${kyouin.kanMei }"></td>
-</tr>
-<tr>
-<th>ふりがな</th><td>姓:<input type="text" name="huri_sei" value="${kyouin.huriSei }"></td>
-			     <td>名:<input type="text" name="huri_mei" value="${kyouin.huriMei }"></td>
+<th>ふりがな</th><td>姓:<input type="text" name="huriSei" value="${kyouin.huriSei }"></td>
+			     <td>名:<input type="text" name="huriMei" value="${kyouin.huriMei }"></td>
 </tr>
 <tr>
 <th>担当学科</th><td><select name="gakkaSelect" style="width:200px; font-size:18px;">
@@ -32,6 +29,9 @@
 			<option  value="${gk.gakkaId }">${gk.gakkaName }</option>
 		</c:forEach>
 		</select></td>
+</tr>
+<tr>
+	<td><input type="submit" value="変更"></td>
 </tr>
 </table>
 </form>

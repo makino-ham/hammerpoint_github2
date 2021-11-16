@@ -26,8 +26,8 @@ public class KyouinDAO {
 				Class.forName(DRIVER_NAME);
 				conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
-				//insert文の準備
-				String sql = "insert into kyouin(kyouin_ID, password, kan_sei, kan_mei, huri_sei, huri_mei, gender, gakkaName) values(?, ?, ?, ?, ?, ?, ?, ?);";
+				//update文の準備
+				String sql = "insert into kyouin(kyouin_ID, password, kan_sei, kan_mei, huri_sei, huri_mei , gender , gakka_ID) values(?, ?, ?, ?, ?, ?, ?, ?);";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				//insert文中の「？」に使用する値を設定しSQLを完成
@@ -38,7 +38,7 @@ public class KyouinDAO {
 				pStmt.setString(5, kyouin.getHuriSei());
 				pStmt.setString(6, kyouin.getHuriMei());
 				pStmt.setInt(7, kyouin.getGender());
-				pStmt.setString(8, kyouin.getGakkaName());
+				pStmt.setInt(8, kyouin.getGakkaId());
 
 				//insert文を実行(resultには追加された行数が代入される)
 				int result = pStmt.executeUpdate();
@@ -63,7 +63,7 @@ public class KyouinDAO {
 			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
 			//select文の準備
-			String sql = "select kyouin.kyouin_ID, gakka.gakka_name, kyouin.gender, concat(kyouin.kan_sei,kyouin.kan_mei)"
+			String sql = "select kyouin.kyouin_ID, gakka.gakka_ID, gakka.gakka_name, kyouin.gender, concat(kyouin.kan_sei,kyouin.kan_mei)"
 					+ "from kyouin "
 					+ "join gakka "
 					+ "on kyouin.gakka_ID = gakka.gakka_ID "
@@ -78,11 +78,12 @@ public class KyouinDAO {
 			//結果表に格納されたレコードの内容を
 			//BookDatインスタンスに設定し、ArrayListインスタンスに追加
 			while(rs.next()) {
-				String gakkaName = rs.getString("gakka.gakka_name");
+				int gId = rs.getInt("gakka.gakka_ID");
+				String gakkaName = rs.getString("gakka_name");
 				String kyouinName = rs.getString("concat(kyouin.kan_sei,kyouin.kan_mei)");
 				int gender = rs.getInt("kyouin.gender");
 				int kyouinId = rs.getInt("kyouin.kyouin_ID");
-				Kyouin kyouin = new Kyouin(gakkaName,gender,kyouinName,kyouinId);
+				Kyouin kyouin = new Kyouin(gId,gakkaName,gender,kyouinName,kyouinId);
 				kyouinList.add(kyouin);
 			}
 
@@ -104,7 +105,7 @@ public class KyouinDAO {
 			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
 			//select文の準備
-			String sql = "select kyouin.kyouin_ID, kyouin.kan_sei, kyouin.kan_mei, kyouin.huri_sei, kyouin.huri_mei, gakka.gakka_name "
+			String sql = "select kyouin.kyouin_ID, kyouin.kan_sei, kyouin.kan_mei, kyouin.huri_sei, kyouin.huri_mei, gakka.gakka_ID)"
 					+ "from kyouin "
 					+ "join gakka "
 					+ "on kyouin.gakka_ID = gakka.gakka_ID "
@@ -121,12 +122,12 @@ public class KyouinDAO {
 			//seitoインスタンスを作成
 			if (rs.next()) {
 				int kyouinId = rs.getInt("kyouin.kyouin_ID");
-				String kanSei = rs.getString("kyouin.kan_sei");
-				String kanMei = rs.getString("kyouin.kan_mei");
-				String huriSei = rs.getString("kyouin.huri_sei");
-				String huriMei = rs.getString("kyouin.huri_mei");
-				String gakkaName = rs.getString("gakka.gakka_name");
-				Kyouin kyouin = new Kyouin(kyouinId, kanSei, kanMei, huriSei, huriMei, gakkaName);
+				String kanSei = rs.getString("kyouin.kanSei");
+				String kanMei = rs.getString("kyouin.kanMei");
+				String huriSei = rs.getString("kyouin.huriSei");
+				String huriMei = rs.getString("kyouin.huriMei");
+				int gakkaId = rs.getInt("gakka.gakka_ID");
+				Kyouin kyouin = new Kyouin(kyouinId, kanSei, kanMei, huriSei, huriMei, gakkaId);
 				kyouinList.add(kyouin);
 			}
 
@@ -148,7 +149,7 @@ public class KyouinDAO {
 			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
 			//select文の準備
-			String sql = "select kyouin.kyouin_ID, kyouin.kan_sei, kyouin.kan_mei, kyouin.huri_sei, kyouin.huri_mei, gakka.gakka_name "
+			String sql = "select kyouin.kyouin_ID, kyouin.kan_sei, kyouin.kan_mei, kyouin.huri_sei, kyouin.huri_mei, gakka.gakka_ID "
 					+ "from kyouin "
 					+ "join gakka "
 					+ "on kyouin.gakka_ID = gakka.gakka_ID "
@@ -168,8 +169,8 @@ public class KyouinDAO {
 				String kanMei = rs.getString("kyouin.kan_mei");
 				String huriSei = rs.getString("kyouin.huri_sei");
 				String huriMei = rs.getString("kyouin.huri_mei");
-				String gakkaName = rs.getString("gakka.gakka_name");
-				kyouin = new Kyouin(kyouinId, kanSei, kanMei, huriSei, huriMei, gakkaName);
+				int gakkaId = rs.getInt("gakka.gakka_ID");
+				kyouin = new Kyouin(kyouinId, kanSei, kanMei, huriSei, huriMei, gakkaId);
 			}
 
 		} catch (SQLException | ClassNotFoundException e) {
@@ -179,4 +180,38 @@ public class KyouinDAO {
 		return kyouin;
 	}
 
+	public boolean update(Kyouin kyouin) {
+		//データベース接続
+		Connection conn = null;
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//update文の準備
+			String sql = "update kyouin set kan_sei = ?,kan_mei = ?,huri_sei = ?,huri_mei = ?, gakka_ID = ? where kyouin_ID = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+			//insert文中の「？」に使用する値を設定しSQLを完成
+			pStmt.setString(1, kyouin.getKanSei());
+			pStmt.setString(2, kyouin.getKanMei());
+			pStmt.setString(3, kyouin.getHuriSei());
+			pStmt.setString(4, kyouin.getHuriMei());
+			pStmt.setInt(5, kyouin.getGakkaId());
+			pStmt.setInt(6, kyouin.getKyouinId());
+			//insert文を実行(resultには追加された行数が代入される)
+			int result = pStmt.executeUpdate();
+			if (result != 1) {
+				return false;
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }
+
+
+

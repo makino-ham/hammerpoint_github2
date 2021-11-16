@@ -12,7 +12,7 @@
 <h1>教員変更削除検索</h1>
 <form action="/Hammerpoint/KyouinKanri?action=hensaku" method="post">
 	<select name="gakkaSelect" style="width:200px; font-size:18px;">
-	<option value="J00">学科を選択してください</option>
+	<option value="999">学科を選択してください</option>
 	<c:choose>
 			<c:when test="${check == 1 }">
 				<c:forEach var="gakka" items="${gakkaList}">
@@ -34,6 +34,7 @@
 	</c:choose>
 </select>
 <input type="submit" value="検索">
+<font color="red"><c:out value="${errorMsg }"/></font>
 </form>
 <c:choose>
 <c:when test="${check == 1}">
