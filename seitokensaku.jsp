@@ -12,7 +12,7 @@
 	<select name="classSelect" style="width:200px; font-size:18px;">
 	<option value="999">クラスを選択してください</option>
 		<c:choose>
-			<c:when test="${check == 1 }">
+			<c:when test="${check == 1 || check == 3}">
 				<c:forEach var="room" items="${classList}">
 				<c:choose>
 					<c:when test="${classId != room.classId }">
@@ -37,12 +37,9 @@
 		<font color="red"><c:out value="${errorMsg }"/></font>
 	</c:when>
 </c:choose>
-<c:choose>
-	<c:when test="${check == 3 }"><font color="red">チェックが入っていません</font></c:when>
-</c:choose>
 </form>
 <c:choose>
-	<c:when test="${check == 1 }">
+	<c:when test="${check == 1 || check == 3}">
 	<form action="/Hammerpoint/SeitoKanri?action=sakujo" method="post">
 	<table border="1">
 		<tr><th>学籍番号</th><th>名前</th><th>性別</th><th>動物</th><th>選択欄</th></tr>
@@ -62,6 +59,9 @@
 		</tr>
 	</c:forEach>
 	</table>
+	<c:choose>
+	<c:when test="${check == 3 }"><font color="red">チェックが入っていません</font><br></c:when>
+	</c:choose>
 	<input type="submit" value="選択した生徒を削除">
 	</form>
 	</c:when>

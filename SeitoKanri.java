@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ClassDAO;
 import dao.DoubutuDAO;
@@ -170,9 +171,11 @@ public class SeitoKanri extends HttpServlet {
 						seitoList = seitoDAO.seitoListOut(classId);
 						//検索ボタンを押したかチェック
 						int check = 1;
+//						セッションスコープに情報を保存
+						HttpSession session=request.getSession();
 						request.setAttribute("check", check);
-						request.setAttribute("classId", classId);
-						request.setAttribute("seitoList", seitoList);
+						session.setAttribute("classId", classId);
+						session.setAttribute("seitoList", seitoList);
 				}
 				//クラスリストの作成
 					List<ClassRoom> classList = new ArrayList<ClassRoom>();
@@ -195,6 +198,10 @@ public class SeitoKanri extends HttpServlet {
 					} else {
 							SeitoDAO seitoDAO = new SeitoDAO();
 							seitoDAO.seitoSakujo(gakusekiId);
+//							セッションスコープの破棄
+							HttpSession session=request.getSession();
+							session.removeAttribute("classId");
+							session.removeAttribute("seitoList");
 							forwardPath =  "/WEB-INF/jsp/seito.jsp";
 					}
 
@@ -273,6 +280,10 @@ public class SeitoKanri extends HttpServlet {
 					Seito seito = new Seito(action, seitoName, mail, doubutuId);//actionは学籍番号
 					SeitoDAO seitoDAO = new SeitoDAO();
 					seitoDAO.seitoHenkouTouroku(seito);
+//					セッションスコープの破棄
+					HttpSession session=request.getSession();
+					session.removeAttribute("classId");
+					session.removeAttribute("seitoList");
 					forwardPath =  "/WEB-INF/jsp/seito.jsp";
 			}
 			//設定されたフォワード先にフォワード

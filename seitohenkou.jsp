@@ -52,7 +52,7 @@
 <td><c:out value="${seito.className}" /></td>
 </tr>
 </table>
-<input type="submit" value="送信">
+<input type="submit" value="変更">
 </form>
 </body>
 </html>
