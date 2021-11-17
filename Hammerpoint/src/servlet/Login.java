@@ -72,7 +72,6 @@ public class Login extends HttpServlet {
 			PasswordDAO dao=new PasswordDAO();
 			account=dao.passninsyou(password);
 
-
 //		ログイン成否
 		if(account!=null) {
 //			セッションスコープにユーザ情報を保存

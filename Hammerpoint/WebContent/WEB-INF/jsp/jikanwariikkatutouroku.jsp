@@ -16,19 +16,5 @@
 
   <button type="submit">一括登録する</button>
 </form>
-
-	<!--
-	<table border="1">
-		<tr><th>選択</th><th>教科</th></tr>
-	<c:forEach var="kyouka" items="${ikkatuList}">
-		<tr>
-		<th><c:out value="${Jikanwari.kyoukaID}" /></th>
-		<th><c:out value="${Jikanwari.youbiId}" /></th>
-		<th><c:out value="${Jikanwari.jugyouSuu}" /></th>
-		<th><c:out value="${Jikanwari.jigen}" /></th>
-		</tr>
-	</c:forEach>
-	</table>
--->
 </body>
 </html>

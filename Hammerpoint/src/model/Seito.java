@@ -44,6 +44,10 @@ public class Seito {
 		this.mail = mail;
 		this.doubutuId = doubutuId;
 	}
+	//クラスID用
+	public Seito(int classId) {
+		this.classId = classId;
+	}
 	public String getGakusekiId() {
 		return gakusekiId;
 	}

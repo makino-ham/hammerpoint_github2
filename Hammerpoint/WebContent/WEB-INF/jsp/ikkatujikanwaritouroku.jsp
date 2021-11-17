@@ -10,6 +10,8 @@
 <script type="text/javascript"src="<%=request.getContextPath() %>/js/myscript.js"></script>
 </head>
 <body>
+<a class="button c" href="/Hammerpoint/JikanwariKanri?action=kanri" method="post"id="absolute">←</a>
+
 <form>
 <input type="file" name="aaaa">
   <button type="submit">送信する</button>

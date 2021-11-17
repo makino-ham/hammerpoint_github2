@@ -17,10 +17,10 @@
 		</tr>
 		<tr>
 		<td><a class="button a" href="">生徒情報を一括登録する</a></td>
-		<td><a class="button a" href="">進級登録</a></td>
+		<td><a class="button a" href="/Hammerpoint/SeitoKanri?action=sinkyu">進級登録</a></td>
 		</tr>
 		<tr>
-		<td><a class="button a" href="">生徒の状態を管理する</a></td>
+		<td><a class="button a" href="/Hammerpoint/SeitoKanri?action=joutai">生徒の状態を管理する</a></td>
 		</tr>
 	</table>
 </center>
