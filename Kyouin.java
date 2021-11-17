@@ -12,6 +12,7 @@ public class Kyouin {
 	String kanMei;
 	String kyouinName;
 	String gakkaName;
+	int gakkaId;
 
 	//コンストラクタ
 	public Kyouin() {}
@@ -25,21 +26,22 @@ public class Kyouin {
 		this.kanSei = kanSei;
 		this.kanMei = kanMei;
 	}
-	public Kyouin(String gakkaName,int gender,String kyouinName,int kyouinId) {
+	public Kyouin(int gakkaId,String gakkaName,int gender,String kyouinName,int kyouinId) {
+		this.gakkaId = gakkaId;
 		this.gakkaName = gakkaName;
 		this.gender = gender;
 		this.kyouinName = kyouinName;
 		this.kyouinId = kyouinId;
 	}
-	public Kyouin(int kyouinId, String kanSei, String kanMei, String huriSei, String huriMei, String gakkaName) {
+	public Kyouin(int kyouinId, String kanSei, String kanMei, String huriSei, String huriMei, int gakkaId) {
 		this.kyouinId = kyouinId;
 		this.kanSei = kanSei;
 		this.kanMei = kanMei;
 		this.huriSei = huriSei;
 		this.huriMei = huriMei;
-		this.gakkaName = gakkaName;
+		this.gakkaId = gakkaId;
 	}
-	public Kyouin(int kyouinId, String password, String kanSei, String kanMei, String huriSei,String huriMei, int gender, String gakkaName) {
+	public Kyouin(int kyouinId, String password, String kanSei, String kanMei, String huriSei,String huriMei, int gender, int gakkaId) {
 		this.kyouinId = kyouinId;
 		this.password = password;
 		this.kanSei = kanSei;
@@ -47,7 +49,14 @@ public class Kyouin {
 		this.huriSei = huriSei;
 		this.huriMei = huriMei;
 		this.gender = gender;
-		this.gakkaName = gakkaName;
+		this.gakkaId = gakkaId;
+	}
+	public Kyouin(String kanSei,String kanMei,String huriSei,String huriMei,int gakkaId) {
+		this.kanSei = kanSei;
+		this.kanMei = kanMei;
+		this.huriSei = huriSei;
+		this.huriMei = huriMei;
+		this.gakkaId = gakkaId;
 	}
 	public String getKyouinName() {
 		return kyouinName;
@@ -78,6 +87,9 @@ public class Kyouin {
 	}
 	public String getKanMei() {
 		return kanMei;
+	}
+	public int getGakkaId() {
+		return gakkaId;
 	}
 
 
