@@ -13,17 +13,45 @@ public class Jikanwari {
 	String youbiName;
 
 	public Jikanwari() {}
+	public Jikanwari(int youbiId,int kyoukaId,String kyoukaName,int jugyouSuu,int jigen) {
+		this.youbiId=youbiId;
+		this.kyoukaId=kyoukaId;
+		this.kyoukaName=kyoukaName;
+		this.jugyouSuu=jugyouSuu;
+		this.jigen=jigen;
+	}
+	public Jikanwari(int kyoukaId,String kyoukaName,int jugyouSuu,int jigen) {
+		this.kyoukaId=kyoukaId;
+		this.kyoukaName=kyoukaName;
+		this.jugyouSuu=jugyouSuu;
+		this.jigen=jigen;
+	}
+	public Jikanwari(int youbiId, int jugyouSuu, int jigen) {
+		this.youbiId = youbiId;
+		this.jugyouSuu = jugyouSuu;
+		this.jigen = jigen;
+	}
 	public Jikanwari(int kyoukaId, int youbiId, int jugyouSuu, int jigen) {
 		this.youbiId = youbiId;
 		this.kyoukaId = kyoukaId;
 		this.jugyouSuu = jugyouSuu;
 		this.jigen = jigen;
 	}
-
-
 	public Jikanwari(int youbiId,String youbiName) {
 		this.youbiId=youbiId;
 		this.youbiName=youbiName;
+	}
+	public Jikanwari(String youbiName,int kyoukaId,String kyoukaName,int jugyouSuu,int jigen) {
+		this.kyoukaId=kyoukaId;
+		this.youbiName=youbiName;
+		this.kyoukaName=kyoukaName;
+		this.jugyouSuu=jugyouSuu;
+		this.jigen=jigen;
+	}
+	public Jikanwari(String kyoukaName,int jugyouSuu,int jigen) {
+		this.kyoukaName=kyoukaName;
+		this.jugyouSuu=jugyouSuu;
+		this.jigen=jigen;
 	}
 
 	public String getYoubiName() {
