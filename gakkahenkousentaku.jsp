@@ -9,8 +9,8 @@
 </head>
 <body>
 	<table>
-		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkou">学科変更</a></td></tr>
-		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=senkouhenkou">専攻変更</a></td></tr>
+		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkoukensaku">学科変更</a></td></tr>
+		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=senkouhenkoukensaku">専攻変更</a></td></tr>
 	</table>
 </body>
 </html>
