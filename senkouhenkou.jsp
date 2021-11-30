@@ -1,20 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.Senkou, java.util.List" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	//リクエストスコープに保存されたgakkaNameを取得
+	String senkouname = (String) request.getAttribute("senkouName");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" media="screen" href="<%= request.getContextPath() %>/css/gakkasenkou.css" />
-<title>専攻変更</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" media="screen" href="<%= request.getContextPath() %>/css/gakkasenkou.css" />
+	<title>専攻変更</title>
 </head>
 <body>
-	<h1>専攻変更</h1>
-	<form>
-		<select>
-			<option value="専攻の選択">専攻の選択</option>
-		</select>
-		<input type="submit" value="決定">
+	<a class="button c" href="/Hammerpoint/SenkouKanri?action=senkouhenkoukensaku" id="absolute">←</a>
+	<form action="/Hammerpoint/SenkouKanri?action=${senkou.senkouId}" method="post">
+		<table>
+			<tr>
+				<th>元の専攻名</th><td>${senkou.senkouName}</td>
+			</tr>
+			<tr>
+				<th>変更する専攻名</th><td><input type="text" name="senkouName" placeholder="${senkou.senkouName}"></td>
+			</tr>
+		</table>
+		<c:if test="${not empty errorMsg}">
+			<p>${errorMsg}</p>
+		</c:if>
+		<input type="submit" value="送信">
 	</form>
-	<a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=shisukantourokukanryou">決定</a>
 </body>
 </html>

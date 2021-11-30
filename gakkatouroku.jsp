@@ -13,6 +13,7 @@
 <title>学科登録</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasenkousentaku" id="absolute">←</a>
 	<p class="x">学科</p>
 	<form action = "/Hammerpoint/GakkaSenkouKanri?action=touroku" method="post">
 		<input type="text" name="gakkatouroku">

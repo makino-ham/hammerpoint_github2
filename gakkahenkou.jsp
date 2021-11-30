@@ -14,6 +14,7 @@
 	<title>学科変更</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkoukensaku" id="absolute">←</a>
 	<form action="/Hammerpoint/GakkaSenkouKanri?action=${gakka.gakkaId}" method="post">
 		<table>
 			<tr>

@@ -13,9 +13,19 @@
 <title>専攻登録</title>
 </head>
 <body>
-	<p class="x">専攻</p>
-	<form action = "/Hammerpoint/GakkaSenkouKanri?action=senkoutouroku" method="post">
-		<input type="text" name="senkoutouroku2">
+	<a class="button c" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasenkousentaku" id="absolute">←</a>
+	<p class="x">専攻登録</p>
+	<p>学科の選択</p>
+	<form action = "/Hammerpoint/SenkouKanri?action=sisukantourokukanryou" method="post">
+		<select name="gakka">
+			<c:forEach var="Gakka" items="${gakkalist}">
+				<c:set var = "flag" value = "${Gakka.gakkaFlag}"></c:set>
+				<c:if test = "${flag == 0}">
+					<option value="${Gakka.gakkaId}">${Gakka.gakkaName}</option>
+				</c:if>
+			</c:forEach>
+		</select><br>
+		<input type="text" name="senkoutouroku2"><br>
 		<input type="submit" value="専攻登録">
 	</form>
 	<c:if test="${not empty errorMsg}">

@@ -11,10 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.SenkouDAO;
 import dao.gakkaDAO;
 import model.Gakka;
-import model.Senkou;
 
 /**
  * Servlet implementation class GakkaSenkouKanri
@@ -47,17 +45,6 @@ public class GakkaSenkouKanri extends HttpServlet {
 		} else if(action.equals("gakkatouroku")) {
 			//フォワード先を学科登録画面に設定
 			forwardPath = "/WEB-INF/jsp/gakkatouroku.jsp";
-		} else if(action.equals("senkoutouroku")) {
-			//Listの宣言
-			List<Gakka> gakkalist = new ArrayList<>();
-			//インスタンスの作成
-			gakkaDAO gakkadao = new gakkaDAO();
-			//gakkaDAOのgkkaselectメソッドを呼び出し、学科データを取得しListに代入
-			gakkalist = gakkadao.gakkaselect();
-			//取得したlistデータをスコープに保存(リクエストスコープ)
-			request.setAttribute("gakkalist", gakkalist);
-			//フォワード先を専攻登録画面に設定
-			forwardPath = "/WEB-INF/jsp/senkoutouroku.jsp";
 		} else if(action.equals("gakkahenkoukensaku")) {
 			//Listの宣言
 			List<Gakka> gakkalist = new ArrayList<>();
@@ -71,11 +58,11 @@ public class GakkaSenkouKanri extends HttpServlet {
 			forwardPath = "/WEB-INF/jsp/gakkahenkoukensaku.jsp";
 		} else if(action.equals("gakkahenkou"))  {
 			//リクエストパラメータから呼び出す(gakkahenkoukensaku.jsp)
-			String gakka = request.getParameter("gakkaname");
+			//String gakka = request.getParameter("gakkaname");
 			//取得データをスコープへ保存
-			request.setAttribute("gakkaName", gakka);
+			//request.setAttribute("gakkaName", gakka);
 			//フォワード先を学科変更画面に設定
-			forwardPath = "/WEB-INF/jsp/gakkahenkou.jsp";
+			//forwardPath = "/WEB-INF/jsp/gakkahenkou.jsp";
 		} else if(action.equals("lnk")){
 			//リクエストパラメータからidを取得(gakkahenkoukensaku.jsp)
 			String id = request.getParameter("id");
@@ -87,38 +74,17 @@ public class GakkaSenkouKanri extends HttpServlet {
 			request.setAttribute("gakka", gakka);
 			//フォワード先を学科変更画面に設定
 			forwardPath = "/WEB-INF/jsp/gakkahenkou.jsp";
-		} else if(action.equals("senkouhenkoukensaku")){
-			//Listの宣言
-			List<Senkou> senkoulist = new ArrayList<>();
-			//インスタンスの作成
-			SenkouDAO senkoudao = new SenkouDAO();
-			//senkouDAOのsenkouselectメソッドを呼び出し、学科データを取得しListに代入
-			senkoulist = senkoudao.senkouselect();
-			//取得したlistデータをスコープに保存(リクエストスコープ)
-			request.setAttribute("senkoulist", senkoulist);
-			//フォワード先を専攻変更検索画面に設定
-			forwardPath = "/WEB-INF/jsp/senkouhenkoukensaku.jsp";
-		} else if(action.equals("senkouhenkou")) {
-			//リクエストパラメータから呼び出す(gakkahenkoukensaku.jsp)
-			String senkou = request.getParameter("senkouname");
-			//取得データをスコープへ保存
-			request.setAttribute("senkouName", senkou);
-			//フォワード先を専攻変更検索画面に設定
-			forwardPath = "/WEB-INF/jsp/senkouhenkou.jsp";
 		} else if(action.equals("gakkasakujo")) {
 			//Listの宣言
 			List<Gakka> gakkalist = new ArrayList<>();
 			//インスタンスの作成
 			gakkaDAO gakkadao = new gakkaDAO();
-			//gakkaDAOのgkkaselectメソッドを呼び出し、学科データを取得しListに代入
+			//gakkaDAOのgakkaselectメソッドを呼び出し、学科データを取得しListに代入
 			gakkalist = gakkadao.gakkaselect();
 			//取得したlistデータをスコープに保存(リクエストスコープ)
 			request.setAttribute("gakkalist", gakkalist);
 			//フォワード先を学科削除画面に設定
 			forwardPath = "/WEB-INF/jsp/gakkasakujo.jsp";
-		} else if(action.equals("senkousakujo")) {
-			//フォワード先を専攻削除画面に設定
-			forwardPath = "/WEB-INF/jsp/senkousakujo.jsp";
 		} else {
 
 		}
@@ -188,7 +154,7 @@ public class GakkaSenkouKanri extends HttpServlet {
 			//フォワード先を学科変更画面に設定
 			forwardPath = "/WEB-INF/jsp/gakkahenkou.jsp";
 
-			//変更の処理(学科)
+		//変更の処理(学科)
 		} else if(action.equals("sisukanhenkoukanryou")){
 			//リクエストパラメータから呼び出す(gakkahenkou.jsp)
 			int gakkaid = Integer.parseInt(request.getParameter("id"));
@@ -210,32 +176,6 @@ public class GakkaSenkouKanri extends HttpServlet {
 			} else {
 				//フォワード先を学科変更画面に設定
 				forwardPath = "/WEB-INF/jsp/gakkahenkou.jsp";
-				//エラーメッセージをリクエストスコープに保存
-				request.setAttribute("errorMsg", "エラーです");
-			}
-
-		//登録の処理(専攻)
-		} else if (action.equals("senkoutouroku")) {
-			//リクエストパラメータから呼び出す(senkoutouroku.jsp)
-			String senkou = request.getParameter("senkoutouroku2");
-			int gakkaid = Integer.parseInt(request.getParameter("gakka"));
-
-			//senkou型に入れる
-			Senkou senkou2 = new Senkou(senkou, gakkaid);
-
-			//daoのインスタンスの作成
-			SenkouDAO seDAO = new SenkouDAO();
-
-			//メソッドの呼び出し+結果を変数に入れる
-			boolean hantei = seDAO.create(senkou2);
-
-			//hanteiがtrueかfalseか
-			if (hantei) {
-				//フォワード先をシス管登録完了画面に設定
-				forwardPath = "/WEB-INF/jsp/sisukantourokukanryou.jsp";
-			} else {
-				//フォワード先を専攻登録画面に設定
-				forwardPath = "/WEB-INF/jsp/senkoutouroku.jsp";
 				//エラーメッセージをリクエストスコープに保存
 				request.setAttribute("errorMsg", "エラーです");
 			}

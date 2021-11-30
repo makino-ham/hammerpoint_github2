@@ -8,9 +8,10 @@
 <title>学科専攻変更の選択</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/Seni?action=gakkasenkou" id="absolute">←</a>
 	<table>
 		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkoukensaku">学科変更</a></td></tr>
-		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=senkouhenkoukensaku">専攻変更</a></td></tr>
+		<tr><td><a class="button a" href="/Hammerpoint/SenkouKanri?action=senkouhenkoukensaku">専攻変更</a></td></tr>
 	</table>
 </body>
 </html>

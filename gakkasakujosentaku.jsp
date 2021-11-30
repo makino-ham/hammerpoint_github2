@@ -8,9 +8,10 @@
 <title>学科削除の選択</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/Seni?action=gakkasenkou" id="absolute">←</a>
 	<table>
 		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasakujo">学科削除</a></td></tr>
-		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=senkousakujo">専攻削除</a></td></tr>
+		<tr><td><a class="button a" href="/Hammerpoint/SenkouKanri?action=senkousakujo">専攻削除</a></td></tr>
 	</table>
 </body>
 </html>

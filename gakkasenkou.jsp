@@ -8,12 +8,9 @@
 <title>学科専攻</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/Login?action=smain" method="post" id="absolute">←</a>
+	<h1>学科専攻の管理</h1>
 	<table>
-		<tr><td>
-			<form action = "/Hammerpoint/GakkaSenkouKanri?action=gakkasenkou" method = "post">
-				<input type = "submit" value = "学科専攻へ">
-			</form>
-		</td></tr>
 		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasenkousentaku">登録</a></td></tr>
 		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkousentaku">変更</a></td></tr>
 		<tr><td><a class="button a" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasakujosentaku">削除</a></td></tr>

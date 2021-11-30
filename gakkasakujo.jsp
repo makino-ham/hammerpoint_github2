@@ -11,6 +11,7 @@
 <title>学科削除</title>
 </head>
 <body>
+	<a class="button c" href="/Hammerpoint/GakkaSenkouKanri?action=gakkasakujosentaku" id="absolute">←</a>
 	<form action="/Hammerpoint/GakkaSenkouKanri?action=sisukansakujokanryou" method="post">
 		<select name="gakka">
 			<%--<option value="学科の選択" selected>学科の選択</option>--%>
