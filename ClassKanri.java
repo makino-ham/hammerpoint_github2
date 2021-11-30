@@ -42,6 +42,16 @@ public class ClassKanri extends HttpServlet {
 					List<Gakka> gakkaList = new ArrayList<Gakka>();
 					gakkaDAO gakkaDAO = new gakkaDAO();
 					gakkaList = gakkaDAO.gakkaselect();
+					//セッションが残っていた場合削除する
+					HttpSession session=request.getSession();
+					session.removeAttribute("classRoom");
+					session.removeAttribute("className");
+					session.removeAttribute("gakkaName");
+					session.removeAttribute("senkouName");
+					session.removeAttribute("kyouinList");
+					session.removeAttribute("gakkaId");
+					session.removeAttribute("gakunen");
+					session.removeAttribute("classList");
 					request.setAttribute("gakkaList", gakkaList);
 					forwardPath = "/WEB-INF/jsp/classtouroku.jsp";
 			} else if (action.equals("henkou")) {
@@ -51,7 +61,24 @@ public class ClassKanri extends HttpServlet {
 					gakkaList = gakkaDAO.gakkaselect();
 					request.setAttribute("gakkaList", gakkaList);
 					forwardPath = "/WEB-INF/jsp/classhenkou.jsp";
-			} else {
+			} else if(action.equals("sinkyuu")) {
+					//学科リストを作成
+					List<Gakka> gakkaList = new ArrayList<Gakka>();
+					gakkaDAO gakkaDAO = new gakkaDAO();
+					gakkaList = gakkaDAO.gakkaselect();
+					//セッションが残っていた場合削除する
+					HttpSession session=request.getSession();
+					session.removeAttribute("classRoom");
+					session.removeAttribute("className");
+					session.removeAttribute("gakkaName");
+					session.removeAttribute("senkouName");
+					session.removeAttribute("kyouinList");
+					session.removeAttribute("gakkaId");
+					session.removeAttribute("gakunen");
+					session.removeAttribute("classList");
+					request.setAttribute("gakkaList", gakkaList);
+					forwardPath = "/WEB-INF/jsp/classsinkyuu.jsp";
+			}	else {
 					ClassRoom classRoom = null;
 					ClassDAO classDAO = new ClassDAO();
 					classRoom = classDAO.classHenkou(Integer.parseInt(action));
@@ -246,6 +273,54 @@ public class ClassKanri extends HttpServlet {
 							HttpSession session=request.getSession();
 							session.removeAttribute("gakkaId");
 							session.removeAttribute("gakunen");
+							forwardPath = "/WEB-INF/jsp/classRoom.jsp";
+					}
+			} else if (action.equals("sinsaku")) {
+					int gakkaId = Integer.parseInt(request.getParameter("gakkaSelect"));
+					//セッションスコープを宣言
+					HttpSession session=request.getSession();
+					session.setAttribute("gakkaId", gakkaId);
+					String ggErrorMsg = null;
+					if (gakkaId == 999) {
+							ggErrorMsg = "学科を選択してください";
+							request.setAttribute("ggErrorMsg", ggErrorMsg);
+					} else {
+							int check = 1;
+							ClassDAO classDAO = new ClassDAO();
+							List<ClassRoom> classList = new ArrayList<ClassRoom>();
+							classList = classDAO.classListOut3(gakkaId);
+							request.setAttribute("check", check);
+							session.setAttribute("classList", classList);
+					}
+					//学科リストを作成
+					List<Gakka> gakkaList = new ArrayList<Gakka>();
+					gakkaDAO gakkaDAO = new gakkaDAO();
+					gakkaList = gakkaDAO.gakkaselect();
+					request.setAttribute("gakkaList", gakkaList);
+					forwardPath = "/WEB-INF/jsp/classsinkyuu.jsp";
+			}	else if (action.equals("sinkyuu")) {
+					String [] classIdS = request.getParameterValues("classId");
+					if (classIdS == null) {//チェックが選択されていなかった場合
+							String checkErrorMsg = "チェックが選択されていません";
+							int check = 1;
+							//学科リストを作成
+							List<Gakka> gakkaList = new ArrayList<Gakka>();
+							gakkaDAO gakkaDAO = new gakkaDAO();
+							gakkaList = gakkaDAO.gakkaselect();
+							request.setAttribute("gakkaList", gakkaList);
+							request.setAttribute("check", check);
+							request.setAttribute("checkErrorMsg", checkErrorMsg);
+							forwardPath = "/WEB-INF/jsp/classsinkyuu.jsp";
+					} else {
+							List<Integer> classId = new ArrayList<Integer>();
+							//文字列型クラスID配列を数値型クラスIDリストに移動
+							for (String id: classIdS) {
+									classId.add(Integer.parseInt(id));
+							}
+							ClassDAO classDAO = new ClassDAO();
+							classDAO.classSinkyuu(classId);
+							HttpSession session=request.getSession();
+							session.removeAttribute("gakkaId");
 							forwardPath = "/WEB-INF/jsp/classRoom.jsp";
 					}
 			} else {//変更

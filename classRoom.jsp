@@ -13,7 +13,10 @@
 	<table>
 		<tr>
 		<td><a class="button a" href="/Hammerpoint/ClassKanri?action=touroku">クラスを登録する</a></td>
-		<td><a class="button a" href="/Hammerpoint/ClassKanri?action=henkou">クラスを変更</a></td>
+		<td><a class="button a" href="/Hammerpoint/ClassKanri?action=henkou">クラスを変更しないでもやっぱする</a></td>
+		</tr>
+		<tr>
+		<td><a class="button a" href="/Hammerpoint/ClassKanri?action=sinkyuu">クラスを進級する</a></td>
 		</tr>
 	</table>
 </center>

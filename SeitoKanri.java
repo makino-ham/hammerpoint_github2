@@ -46,6 +46,9 @@ public class SeitoKanri extends HttpServlet {
 			classList = classDAO.classListOut();
 			//チェック用変数
 			int check = 0;
+			//sessionが残っていた場合削除
+			HttpSession session=request.getSession();
+			session.removeAttribute("seito");
 			request.setAttribute("check", check);
 			request.setAttribute("classList", classList);
 			request.setAttribute("doubutuList", doubutuList);
@@ -60,6 +63,9 @@ public class SeitoKanri extends HttpServlet {
 			/*ユーザー情報をセッションスコープに保存
 			HttpSession session = request.getSession();
 			session.setAttribute("check", check);*/
+			//sessionが残っていた場合削除
+			HttpSession session=request.getSession();
+			session.removeAttribute("seito");
 			request.setAttribute("classList", classList);
 			forwardPath = "/WEB-INF/jsp/seitokensaku.jsp";
 		} else if (action.equals("joutai")) {
@@ -67,11 +73,25 @@ public class SeitoKanri extends HttpServlet {
 			ClassDAO classDAO = new ClassDAO();
 			classList = classDAO.classListOut();
 			int check = 0;
+			//sessionが残っていた場合削除
+			HttpSession session=request.getSession();
+			session.removeAttribute("seito");
 			request.setAttribute("classList", classList);
 			request.setAttribute("check", check);
 			forwardPath = "/WEB-INF/jsp/seitojoutai.jsp";
-		}
-		else {
+		} else if (action.equals("ikkatu")) {
+			//クラスリストを作成
+			List<ClassRoom> classList = new ArrayList<ClassRoom>();
+			ClassDAO classDAO = new ClassDAO();
+			classList = classDAO.classListOut();
+			//動物リストを作成
+			List<Doubutu> doubutuList = new ArrayList<Doubutu>();
+			DoubutuDAO doubutuDAO = new DoubutuDAO();
+			doubutuList = doubutuDAO.doubutuListOut();
+			request.setAttribute("classList", classList);
+			request.setAttribute("doubutuList", doubutuList);
+			forwardPath = "/WEB-INF/jsp/seitoikkatutouroku.jsp";
+		}	else {
 			Seito seito = new Seito();
 			SeitoDAO seitoDAO = new SeitoDAO();
 			seito = seitoDAO.seitoHenkou(action);//学籍番号を引数にセットする
@@ -83,7 +103,11 @@ public class SeitoKanri extends HttpServlet {
 			List<ClassRoom> classList = new ArrayList<ClassRoom>();
 			ClassDAO classDAO = new ClassDAO();
 			classList = classDAO.classListOut();
-			request.setAttribute("seito", seito);
+			HttpSession session=request.getSession();
+			//sessionスコープの破棄
+			session.removeAttribute("classId");
+			session.removeAttribute("seitoList");
+			session.setAttribute("seito", seito);
 			request.setAttribute("classList", classList);
 			request.setAttribute("doubutuList", doubutuList);
 			forwardPath = "/WEB-INF/jsp/seitohenkou.jsp";
@@ -277,14 +301,37 @@ public class SeitoKanri extends HttpServlet {
 					String seitoName = request.getParameter("seitoName");
 					String mail = request.getParameter("mail");
 					int doubutuId = Integer.parseInt(request.getParameter("doubutuSelect"));
-					Seito seito = new Seito(action, seitoName, mail, doubutuId);//actionは学籍番号
-					SeitoDAO seitoDAO = new SeitoDAO();
-					seitoDAO.seitoHenkouTouroku(seito);
-//					セッションスコープの破棄
+//					セッションスコープの宣言
 					HttpSession session=request.getSession();
-					session.removeAttribute("classId");
-					session.removeAttribute("seitoList");
-					forwardPath =  "/WEB-INF/jsp/seito.jsp";
+					if (seitoName == "" || mail == "" || doubutuId == 999) {
+							if (seitoName == "") {
+									String nameErrorMsg = "生徒名を入力してください";
+									request.setAttribute("nameErrorMsg", nameErrorMsg);
+							} else {
+									Seito seito = (Seito) session.getAttribute("seito");
+									seito.setSeitoName(seitoName);
+							}
+							if (mail == "") {
+									String mailErrorMsg = "メールアドレスが入力されていません";
+									request.setAttribute("mailErrorMsg", mailErrorMsg);
+							}
+							if (doubutuId == 999) {
+									String doubutuErrorMsg = "動物を選択してください";
+									request.setAttribute("doubutuErrorMsg", doubutuErrorMsg);
+							}
+							//動物リストを作成
+							List<Doubutu> doubutuList = new ArrayList<Doubutu>();
+							DoubutuDAO doubutuDAO = new DoubutuDAO();
+							doubutuList = doubutuDAO.doubutuListOut();
+							request.setAttribute("doubutuList", doubutuList);
+							forwardPath =  "/WEB-INF/jsp/seitohenkou.jsp";
+					} else {
+							Seito seito = new Seito(action, seitoName, mail, doubutuId);//actionは学籍番号
+							SeitoDAO seitoDAO = new SeitoDAO();
+							seitoDAO.seitoHenkouTouroku(seito);
+							session.removeAttribute("seito");
+							forwardPath =  "/WEB-INF/jsp/seito.jsp";
+					}
 			}
 			//設定されたフォワード先にフォワード
 			RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
