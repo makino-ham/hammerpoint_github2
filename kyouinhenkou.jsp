@@ -8,6 +8,7 @@
 <title>教員変更</title>
 </head>
 <body>
+<center>
 <h1>教員変更</h1>
 <form action="/Hammerpoint/KyouinKanri?action=${kyouin.kyouinId }" method="post">
 <table>
@@ -24,16 +25,23 @@
 </tr>
 <tr>
 <th>担当学科</th><td><select name="gakkaSelect" style="width:200px; font-size:18px;">
-		<option value="Ji0">学科を選択してください</option>
+		<option value="999">学科を選択してください</option>
 		<c:forEach var="gk" items="${gakkaList}">
-			<option  value="${gk.gakkaId }">${gk.gakkaName }</option>
+			<c:choose>
+				<c:when test="${ gk.gakkaId != gakkaId}">
+					<option  value="${gk.gakkaId}">${gk.gakkaName }</option>
+				</c:when>
+				<c:when test="${ gk.gakkaId == gakkaId}">
+					<option  value="${gk.gakkaId}" selected>${gk.gakkaName }</option>
+				</c:when>
+			</c:choose>
 		</c:forEach>
 		</select></td>
 </tr>
-<tr>
-	<td><input type="submit" value="変更"></td>
-</tr>
 </table>
+	<input type="submit" value="変更"><br>
+	<font color="red"><c:out value="${errorMsg }"/></font>
 </form>
+</center>
 </body>
 </html>

@@ -211,6 +211,72 @@ public class KyouinDAO {
 		}
 		return true;
 	}
+
+	public boolean kyouinSakujo(String kyouinId[]) {
+		Connection conn = null;
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			//select文を準備
+			String sql = "update kyouin set flag = 1 where kyouin_ID = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			for (String kyouin: kyouinId) {
+				pStmt.setString(1, kyouin);
+				//update文を実行(resultには追加された行数が代入される)
+				int result = pStmt.executeUpdate();
+				if (result != 1) {
+					return false;
+				}
+			}
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+
+	public List<Kyouin> kyouinListOut2(int kyouinId) {
+		Connection conn = null;
+		List<Kyouin> kyouinList = new ArrayList<Kyouin>();
+
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//select文の準備
+			String sql = "select kyouin.kyouin_ID, kyouin.gakka_ID, kyouin.kan_sei, kyouin.kan_mei, kyouin.huri_sei, kyouin.huri_mei "
+					+ "from kyouin "
+					+ "where kyouin.kyouin_ID = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			//select分の?に入れるものの設定
+			pStmt.setInt(1, kyouinId);
+
+			//select文を実行し、結果表（Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			//結果表に格納されたレコードの内容を
+			//BookDatインスタンスに設定し、ArrayListインスタンスに追加
+			while(rs.next()) {
+				int kId = rs.getInt("kyouin.kyouin_ID");
+				String kanSei = rs.getString("kyouin.kan_sei");
+				String kanMei = rs.getString("kyouin.kan_mei");
+				String huriSei = rs.getString("kyouin.huri_sei");
+				String huriMei = rs.getString("kyouin.huri_mei");
+				int gakkaId = rs.getInt("kyouin.gakka_ID");
+				Kyouin kyouin = new Kyouin(kId,kanSei,kanMei,huriSei,huriMei,gakkaId);
+				kyouinList.add(kyouin);
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return kyouinList;
+	}
 }
 
 

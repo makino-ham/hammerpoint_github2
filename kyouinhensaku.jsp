@@ -33,12 +33,12 @@
 	</c:otherwise>
 	</c:choose>
 </select>
-<input type="submit" value="検索">
+<input type="submit" value="検索"><br>
 <font color="red"><c:out value="${errorMsg }"/></font>
 </form>
 <c:choose>
 <c:when test="${check == 1}">
-<form>
+<form action="/Hammerpoint/KyouinKanri?action=sakujo" method="post">
 	<table border="1">
 		<tr><th>学科</th><th>性別</th><th>名前</th><th>教員ID</th><th>選択</th></tr>
 		<c:forEach var="kyouin" items="${kyouinList }">
@@ -57,8 +57,8 @@
 			</tr>
 		</c:forEach>
 	</table>
-</form>
 <input type="submit" value="削除">
+</form>
 </c:when>
 </c:choose>
 </center>
