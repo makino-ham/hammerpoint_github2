@@ -14,12 +14,11 @@
 	<a class="button c" href="/Hammerpoint/GakkaSenkouKanri?action=gakkahenkousentaku" id="absolute">←</a>
 	<h1>専攻変更の検索</h1>
 	<table border="1">
-		<tr><th>専攻ID</th><th>専攻名</th></tr>
+		<tr><th>専攻名</th></tr>
 		<c:forEach var="Senkou" items="${senkoulist}">
 			<c:set var ="flag" value ="${Senkou.senkouFlag}"></c:set>
 			<c:if test = "${flag == 0}">
 				<tr>
-					<td>${Senkou.senkouId}</td>
 					<td><a href="./SenkouKanri?action=slnk&id=${Senkou.senkouId}">${Senkou.senkouName}</a></td>
 				</tr>
 			</c:if>

@@ -62,10 +62,14 @@ public class SenkouKanri extends HttpServlet {
 			String id = request.getParameter("id");
 			//インスタンスの作成
 			SenkouDAO sedao = new SenkouDAO();
-			//gakkaIdを引数にして、gakkaを取得
+			gakkaDAO gadao = new gakkaDAO();
+			//senkouIdを引数にして、senkouとgakkaを取得
 			Senkou senkou = sedao.senkouhenkoukensaku(id);
-			//取得したgakkaをスコープに保存
+			String gakkaid = String.valueOf(senkou.getGakkaId());
+			Gakka gakka = gadao.gakkahenkoukensaku(gakkaid);
+			//取得したsenkouとgakkaをスコープに保存
 			request.setAttribute("senkou", senkou);
+			request.setAttribute("gakka", gakka);
 			//フォワード先を専攻変更検索画面に設定
 			forwardPath = "/WEB-INF/jsp/senkouhenkou.jsp";
 		} else if(action.equals("senkousakujo")) {
