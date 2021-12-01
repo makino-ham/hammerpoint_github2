@@ -237,4 +237,36 @@ public class KyoukaDAO {
 			}
 			return true;
 		}
+	public List<Kyouka> kyoukaIchiran() {
+		Connection conn = null;
+		List<Kyouka> kyoukaList = new ArrayList<Kyouka>();
+
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//select文の準備
+			String sql = "select kyouka_ID, kyouka_name from kyouka;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			//select文を実行し、結果表（Result)を取得
+			ResultSet rs = pstmt.executeQuery();
+
+			//結果表に格納されたレコードの内容を
+			//BookDatインスタンスに設定し、ArrayListインスタンスに追加
+			while(rs.next()) {
+				int kyoukaId = rs.getInt("kyouka_ID");
+				String kyoukaName = rs.getString("kyouka_name");
+				Kyouka kyouka = new Kyouka(kyoukaId, kyoukaName);
+				kyoukaList.add(kyouka);
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return kyoukaList;
+	}
 }

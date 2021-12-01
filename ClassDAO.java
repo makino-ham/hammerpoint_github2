@@ -174,6 +174,41 @@ public class ClassDAO {
 		}
 		return classList;
 	}
+	public List<ClassRoom> classListOut3(int gakkaId) {
+		Connection conn = null;
+		List<ClassRoom> classList = new ArrayList<ClassRoom>();
+
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//select文の準備
+			String sql = "select class_ID, class_name "
+					+ "from class "
+					+ "where flag = 0 and gakka_ID = ? and gakunen = 1;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			//select分の?に入れるものの設定
+			pStmt.setInt(1, gakkaId);
+			//select文を実行し、結果表（Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			//結果表に格納されたレコードの内容を
+			//BookDatインスタンスに設定し、ArrayListインスタンスに追加
+			while(rs.next()) {
+				int classId = rs.getInt("class_ID");
+				String className = rs.getString("class_name");
+				ClassRoom classRoom = new ClassRoom(classId, className);
+				classList.add(classRoom);
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return classList;
+	}
 	public ClassRoom classHenkou(int classId) {
 		ClassRoom classRoom = null;
 		Connection conn = null;
@@ -246,6 +281,30 @@ public class ClassDAO {
 			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			//select文を準備
 			String sql = "update class set flag = 1 where class_ID = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			for (int id: classId) {
+					pStmt.setInt(1, id);
+					//update文を実行(resultには追加された行数が代入される)
+					int result = pStmt.executeUpdate();
+					if (result != 1) {
+						return false;
+				}
+			}
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+	public boolean classSinkyuu(List<Integer> classId) {
+		Connection conn = null;
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			//select文を準備
+			String sql = "update class set gakunen = 2 where class_ID = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			for (int id: classId) {
 					pStmt.setInt(1, id);

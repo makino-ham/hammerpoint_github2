@@ -70,7 +70,7 @@
 				</td>
 		</tr>
 		<tr>
-				<th>クラス登録：</th>
+				<th>クラス：</th>
 					<td>
 							<select name="classSelect" style="width:200px; font-size:18px;">
 									<option value="999">クラスを選択してください</option>

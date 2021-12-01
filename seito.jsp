@@ -21,6 +21,7 @@
 		</tr>
 		<tr>
 		<td><a class="button a" href="/Hammerpoint/SeitoKanri?action=joutai">生徒の状態を管理する</a></td>
+		<td><a class="button a" href="/Hammerpoint/SeitoKanri?action=ikkatu">生徒を一括登録する</a></td>
 		</tr>
 	</table>
 </center>

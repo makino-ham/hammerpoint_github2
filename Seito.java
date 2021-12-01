@@ -75,5 +75,32 @@ public class Seito {
 	public String getClassName() {
 		return className;
 	}
+	public void setGakusekiId(String gakusekiId) {
+		this.gakusekiId = gakusekiId;
+	}
+	public void setSeitoName(String seitoName) {
+		this.seitoName = seitoName;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public void setDoubutuName(String doubutuName) {
+		this.doubutuName = doubutuName;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public void setClassId(int classId) {
+		this.classId = classId;
+	}
+	public void setDoubutuId(int doubutuId) {
+		this.doubutuId = doubutuId;
+	}
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+	public void setSeitoFlag(int seitoFlag) {
+		this.seitoFlag = seitoFlag;
+	}
 
 }

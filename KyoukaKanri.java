@@ -48,6 +48,10 @@ public class KyoukaKanri extends HttpServlet {
 				gakkaDAO gakkaDAO = new gakkaDAO();
 				gakkaList = gakkaDAO.gakkaselect();
 				int check = 0;
+				HttpSession session=request.getSession();
+				session.removeAttribute("classId");
+				session.removeAttribute("kyoukaList");
+				session.removeAttribute("kyouka");
 				request.setAttribute("check", check);
 				request.setAttribute("gakkaList", gakkaList);
 				request.setAttribute("kyouinList", kyouinList);
