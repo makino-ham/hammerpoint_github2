@@ -201,4 +201,73 @@ public class SenkouDAO {
 		}
 		return true;
 	}
+
+	public List<Senkou> senkouKensaku(int gakkaId) {
+		Connection conn = null;
+		List<Senkou> senkouList = new ArrayList<Senkou>();
+
+		try {
+		//データベースへ接続
+		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER_NAME);
+		conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+		//select文の準備
+		String sql = "select senkou_ID, senkou_name "
+		+ "from senkou "
+		+ "where gakka_ID = ? and flag = 0;";
+		PreparedStatement pStmt = conn.prepareStatement(sql);
+		//select分の?に入れるものの設定
+		pStmt.setInt(1, gakkaId);
+
+		//select文を実行し、結果表（Result)を取得
+		ResultSet rs = pStmt.executeQuery();
+
+		//結果表に格納されたレコードの内容を
+		//Seitoインスタンスに設定し、ArrayListインスタンスに追加
+		while(rs.next()) {
+		int senkouId = rs.getInt("senkou_ID");
+		String senkouName = rs.getString("senkou_name");
+		Senkou senkou = new Senkou(senkouId, senkouName);
+		senkouList.add(senkou);
+		}
+		} catch (SQLException | ClassNotFoundException e) {
+		e.printStackTrace();
+		return null;
+		}
+		return senkouList;
+		}
+		public String senkouNameOut(int senkouId) {
+		String senkouName = null;
+		Connection conn = null;
+
+		try {
+		//データベースへ接続
+		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER_NAME);
+		conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+		//select文の準備
+		String sql = "select senkou_name "
+		+ "from senkou "
+		+ "where senkou_ID = ?;";
+		PreparedStatement pStmt = conn.prepareStatement(sql);
+		//select分の?に入れるものの設定
+		pStmt.setInt(1, senkouId);
+
+		//select文を実行し、結果表（Result)を取得
+		ResultSet rs = pStmt.executeQuery();
+
+		//結果表に格納されたレコードの内容を
+		if (rs.next()) {
+		//結果表からデータを取得
+		senkouName = rs.getString("senkou_name");
+		}
+
+		} catch (SQLException | ClassNotFoundException e) {
+		e.printStackTrace();
+		return null;
+		}
+		return senkouName;
+		}
 }

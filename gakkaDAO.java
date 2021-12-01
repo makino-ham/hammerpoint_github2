@@ -199,4 +199,39 @@ public class gakkaDAO {
 		}
 		return true;
 	}
+
+	public Gakka gakkaOut(int gakkaId) {
+		Gakka gakka = null;
+		Connection conn = null;
+
+		try {
+		//データベースへ接続
+		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName(DRIVER_NAME);
+		conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+		//select文の準備
+		String sql = "select gakka_name "
+		+ "from gakka "
+		+ "where gakka_ID = ?;";
+		PreparedStatement pStmt = conn.prepareStatement(sql);
+		//select分の?に入れるものの設定
+		pStmt.setInt(1, gakkaId);
+
+		//select文を実行し、結果表（Result)を取得
+		ResultSet rs = pStmt.executeQuery();
+
+		//結果表に格納されたレコードの内容を
+		if (rs.next()) {
+		//結果表からデータを取得
+		String gakkaName= rs.getString("gakka_name");
+		gakka = new Gakka(gakkaName);
+		}
+
+		} catch (SQLException | ClassNotFoundException e) {
+		e.printStackTrace();
+		return null;
+		}
+		return gakka;
+		}
 }
