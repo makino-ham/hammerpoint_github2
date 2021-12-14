@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,16 +10,16 @@
 <body>
 <center>
 <h1>パスワード変更</h1>
-<form action="/Hammerpoint/KyouinKanri?action=touroku" method="post">
+<form action="/Hammerpoint/PasswordHenkou?action=aaa" method="post">
 	<table>
 		<tr>
 		<th><a class="lbl">新しいパスワード</a></th>
-		<td><a class="pass"><input type="password" id="newpass" maxlength="20" value=""></a></td>
+		<td><a class="pass"><input type="password" id="newpass" name="newpass" maxlength="20" value=""></a></td>
 		<td><input type="button" id="newbtn" onclick="pushHideButton();" value="表示"></td>
 		</tr>
 		<tr>
 		<th><a class="lbl">パスワードを確認</a></th>
-		<td><a class="pass"><input type="password" id="input_pass" maxlength="20" value=""></a></td>
+		<td><a class="pass"><input type="password" id="input_pass" name="input_pass" maxlength="20" value=""></a></td>
 		<td><input type="button" id="btn_passview" onclick="pushHideButton2();" value="表示"></td>
 		</tr>
 		<script language="javascript">
@@ -46,6 +47,9 @@
   		}
   		</script>
 	</table>
+	<input type="submit" value="変更"><br>
+	<font color="red"><c:out value="${errorMsg }"/></font>
+	<font color="red"><c:out value="${errorMsg2 }"/></font>
 	</form>
 </center>
 </body>
