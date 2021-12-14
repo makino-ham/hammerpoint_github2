@@ -187,7 +187,7 @@ public class SeitoDAO {
 	public List<Seito> joutaiKensaku(int flag, int classId) {
 		Connection conn = null;
 		List<Seito> seitoList = new ArrayList<Seito>();
-		
+
 		try {
 			//データベースへ接続
 			Class.forName("com.mysql.jdbc.Driver");
@@ -398,5 +398,46 @@ public class SeitoDAO {
 			return null;
 		}
 		return seitoList;
+	}
+	public Seito seitoKensaku(String gakusekiId) {
+		Seito seito = null;
+		Connection conn = null;
+
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//select文の準備
+			String sql = "select seito.seito_name, seito.gender, class.class_name "
+					+ "from seito "
+					+ "join class "
+					+ "on seito.class_ID = class.class_ID "
+					+ "where seito.gakuseki_ID = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			//select分の?に入れるものの設定
+			pStmt.setString(1, gakusekiId);
+
+			//select文を実行し、結果表（Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			//結果表に格納されたレコードの内容を
+			if (rs.next()) {
+				//結果表からデータを取得
+				String seitoName = rs.getString("seito.seito_name");
+				int  gender= rs.getInt("seito.gender");
+				String className = rs.getString("class.class_name");
+				seito = new Seito();
+				seito.setSeitoName(seitoName);
+				seito.setGender(gender);
+				seito.setClassName(className);
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return seito;
 	}
 }
