@@ -20,7 +20,39 @@ public class KyoukaDAO {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
-	public List<Kyouin> kyouinKensaku(int gakkaId) {
+	public List<Kyouka> kyoukaListOut(int classId) {
+		//データベース接続
+		Connection conn = null;
+		List<Kyouka> kyoukaList = new ArrayList<Kyouka>();
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//insert文の準備
+			String sql = "select kyouka_name,kyouka_ID from kyouka where class_ID=?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+//			//insert文中の「？」に使用する値を設定しSQLを完成
+			pStmt.setInt(1, classId);
+
+			//select文を実行し、結果表(Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			while(rs.next()) {
+				String kyoukaName = rs.getString("kyouka_name");
+				int kyoukaId = rs.getInt("kyouka_ID");
+				Kyouka kyouka = new Kyouka(kyoukaName, kyoukaId);
+				kyoukaList.add(kyouka);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return kyoukaList;
+		}
+	public List<Kyouin> kyouinKensaku(int gakkaId) {//教員のリストアウト
 		Connection conn = null;
 		List<Kyouin> kyouinList = new ArrayList<Kyouin>();
 
@@ -269,4 +301,82 @@ public class KyoukaDAO {
 		}
 		return kyoukaList;
 	}
+	public List<Kyouka> teacherkyoukaListOut(int kyouinId,int today) {
+		//データベース接続
+		Connection conn = null;
+		List<Kyouka> kyoukaList = new ArrayList<Kyouka>();
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//insert文の準備
+			String sql = "select senkou.senkou_name,class.gakunen,kyouka.kyouka_name,kyouka.kyouka_ID, kyouka.class_ID, jikanwari.jigen \r\n" +
+					"from kyouka \r\n" +
+					"join class \r\n" +
+					"on kyouka.class_ID=class.class_ID \r\n" +
+					"join jikanwari \r\n" +
+					"on kyouka.kyouka_ID=jikanwari.kyouka_ID \r\n" +
+					"join senkou \r\n" +
+					"on senkou.senkou_ID=class.senkou_ID \r\n" +
+					"where kyouka.kyouin_ID=? and jikanwari.youbi_ID=? and jikanwari.jikanwari_flag=0 \r\n" +
+					"order by jikanwari.jigen;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+//			//insert文中の「？」に使用する値を設定しSQLを完成
+			pStmt.setInt(1, kyouinId);
+			pStmt.setInt(2, today);
+
+			//select文を実行し、結果表(Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			while(rs.next()) {
+				String senkouName=rs.getString("senkou.senkou_name");
+				int classId = rs.getInt("kyouka.class_ID");
+				int gakunen=rs.getInt("class.gakunen");
+				String kyoukaName = rs.getString("kyouka.kyouka_name");
+				int kyoukaId = rs.getInt("kyouka.kyouka_ID");
+				int jigen=rs.getInt("jikanwari.jigen");
+				Kyouka kyouka = new Kyouka(senkouName, classId, gakunen,kyoukaName, kyoukaId,jigen);
+				kyoukaList.add(kyouka);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return kyoukaList;
+		}
+	public List<Kyouka> kyouinKyoukaListOut(int kyouinId) {
+		//データベース接続
+		Connection conn = null;
+		List<Kyouka> kyoukaList = new ArrayList<Kyouka>();
+		try {
+			//データベースへ接続
+			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(DRIVER_NAME);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+			//insert文の準備
+			String sql = "select kyouka_name,kyouka_ID from kyouka where kyouin_ID=?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+//			//insert文中の「？」に使用する値を設定しSQLを完成
+			pStmt.setInt(1, kyouinId);
+
+			//select文を実行し、結果表(Result)を取得
+			ResultSet rs = pStmt.executeQuery();
+
+			while(rs.next()) {
+				String kyoukaName = rs.getString("kyouka_name");
+				int kyoukaId = rs.getInt("kyouka_ID");
+				Kyouka kyouka = new Kyouka(kyoukaName, kyoukaId);
+				kyoukaList.add(kyouka);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return kyoukaList;
+		}
 }
