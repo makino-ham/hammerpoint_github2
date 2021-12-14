@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Doubutu;
+import model.Seito;
 
 public class DataDAO {
 		private final String DRIVER_NAME ="com.mysql.jdbc.Driver";
@@ -255,5 +256,39 @@ public class DataDAO {
 				return null;
 			}
 			return doubutuList;
+		}
+		public List<Seito> kaikinsyouListOut(List<String> gakusekiList) {
+			Connection conn = null;
+			List<Seito> seitoList = new ArrayList<Seito>();
+
+			try {
+				//データベースへ接続
+				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName(DRIVER_NAME);
+				conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+				//select文の準備
+				String sql = "select gakuseki_ID, seito_name, gender "
+						+ "from seito "
+						+ "where gakuseki_ID = ?  and seito_flag = 0;";
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+				for (String id: gakusekiList) {
+						pStmt.setString(1, id);
+						//select文を実行し、結果表（Result)を取得
+						ResultSet rs = pStmt.executeQuery();
+						if (rs.next()) {
+								String gakusekiId = rs.getString("gakuseki_ID");
+								String seitoName = rs.getString("seito_name");
+								int gender = rs.getInt("gender");
+								Seito seito = new Seito(gakusekiId, seitoName, gender);
+								seitoList.add(seito);
+						}
+				}
+
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return seitoList;
 		}
 }
